@@ -14,9 +14,9 @@ class LoginForm(forms.Form):
                     auth.login(request, user)
                     return True
                 else:
-                    self.add_error(None, 'Ваш аккаунт заблокирован')
+                    self.add_error(None, 'Your account has been suspended')
             else:
-                self.add_error(None, 'Ошибка логина/пароля. Вам в доступе отказано!')
+                self.add_error(None, 'Login / password error. You are denied access!')
         return False
 
 class RegisterForm(forms.Form):
@@ -30,14 +30,14 @@ class RegisterForm(forms.Form):
     def is_valid_(self):
         ret = self.is_valid()
         if len(CustomUser.objects.filter(username=self.cleaned_data.get('login'))) > 0:
-            self.add_error('login', "Это имя уже занято")
+            self.add_error('login', "This name is already taken")
             ret = False
         if len(CustomUser.objects.filter(email=self.cleaned_data.get('email'))) > 0:
-            self.add_error('email', "Этот email уже использован")
+            self.add_error('email', "This email has already been used")
             ret = False
         if self.cleaned_data.get('password1') != self.cleaned_data.get('password2'):
-            self.add_error('password1', "Пароли не совпадают")
-            self.add_error('password2', "Пароли не совпадают")
+            self.add_error('password1', "Passwords do not match")
+            self.add_error('password2', "Passwords do not match")
             ret = False
         return ret
 
@@ -66,14 +66,14 @@ class MainSettingsForm(forms.Form):
         try:
             u = CustomUser.objects.get(username=self.cleaned_data.get('login'))
             if u.user_ptr_id != user.user_ptr_id:
-                self.add_error('login', "Это имя уже занято")
+                self.add_error('login', "This name is already taken")
                 ret = False
         except CustomUser.DoesNotExist:
             pass
         try:
             u = CustomUser.objects.get(email=self.cleaned_data.get('email'))
             if u.user_ptr_id != user.user_ptr_id:
-                self.add_error('email', "Этот email уже использован")
+                self.add_error('email', "This email has already been used")
                 ret = False
         except CustomUser.DoesNotExist:
             pass
@@ -87,8 +87,8 @@ class PswSettingsForm(forms.Form):
     def is_valid_(self):
         ret = self.is_valid()
         if self.cleaned_data.get('password1') != self.cleaned_data.get('password2'):
-            self.add_error('password1', "Пароли не совпадают")
-            self.add_error('password2', "Пароли не совпадают")
+            self.add_error('password1', "password not match")
+            self.add_error('password2', "Passwords do not match")
             ret = False
         return ret
 
