@@ -6,6 +6,5 @@ from django.test import TestCase
 class Demotest(TestCase):
 	def testAd(self):
 		self.assertEqual(1+2,3)
-		self.assertEqual(2+3,5)
-
+		
 	
