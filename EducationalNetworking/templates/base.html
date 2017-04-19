@@ -1,0 +1,121 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href='{% static "css/bootstrap.css" %}' />
+  <link rel="stylesheet" type="text/css" href='{% static "css/custom_style.css" %}' />
+  <link rel="stylesheet" type="text/css" href='{% static "css/bootstrap-tagsinput.css" %}' />
+  <script src='{% static "js/jquery.min.js" %}'></script>
+  <script src='{% static "js/bootstrap-tagsinput.min.js" %}'></script>
+  <script type="text/javascript" src='{% static "js/bootstrap.js" %}'></script>
+  {%block scripts%}{%endblock%}
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="col-xs-2">
+      <div class="logo">
+        <a href= '{% static "img/logo.png" %}' > </a>
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <form class="navbar-search-form" role="search">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Question" id="search-field" style="border-radius: 0px;">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-success-nav">Find</button>
+          </span>
+        </div>
+      </form>
+
+    </div>
+    <div class="col-xs-4">
+      {% if user %}
+      <span class="account-label">{{ user.username }}</span>
+      <span>
+        <button type="button" class="btn account-btn" onclick="location.href='/logout'">
+          <span class="glyphicon glyphicon-log-out"></span>
+        </button>
+      </span>
+      <span>
+        <button type="button" class="btn account-btn" onclick="location.href='/settings'">
+          <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+        </button>
+      </span>
+           <span>
+          <a href="{% url 'ask' %}">
+          <button type="button" class="btn account-btn">
+            <span>Ask</span>
+          </button>
+         </a>
+          </span>
+
+      {% else %}
+
+      <span>
+        <a href="{% url 'login' %}">
+          <button type="button" class="btn account-btn">
+            <span> Log in</span>
+          </button>
+        </a>
+      </span>
+          <span>
+          <a href="{% url 'ask' %}">
+          <button type="button" class="btn account-btn">
+            <span>Ask</span>
+              </button>
+      <span>
+        <a href="register">
+          <button type="button" class="btn account-btn">
+            <span>Register</span>
+          </button>
+        </a>
+      </span>
+    </div>
+    {% endif %}
+  </nav>
+  <div class="container" id="page_container">
+    <div class="col-xs-6 col-xs-offset-2">
+      {%block content%} {%endblock%}
+    </div>
+    <div class="col-xs-4">
+
+      <div class="popular-tags-container">
+        <div class="tags-header">Popular tags</div>
+        <div class="tags-body">
+          <a href="" class="tag">Prakash</a>
+          <a href="#" class="tag">jsp</a>
+          <a href="#" class="tag">NetBean</a>
+          <a href="#" class="tag">CSS</a>
+          <a href="#" class="tag">HTML</a>
+          <a href="#" class="tag">ReactJS</a>
+          <a href="#" class="tag">ARGOUML</a>
+          <a href="#" class="tag">Software Engineering</a>
+          <a href="#" class="tag">Computatinal</a>
+          <a href="#" class="tag">Eclipse</a>
+        </div>
+      </div>
+      <div class="popular-members-container" >
+        <div class="members-header">Best members</div>
+        <div class="members-body">
+          <div class="list-group">
+            <a href="#" class="list-group-item">Om Prakash</a>
+            <a href="#" class="list-group-item">Roshan</a>
+            <a href="#" class="list-group-item">Umesh</a>
+            <a href="#" class="list-group-item">Aashish</a>
+            <a href="#" class="list-group-item">Protim</a>
+              <a href="#" class="list-group-item">Ashish</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="col-xs-4 col-xs-offset-4">
+      <div class="footer-text">EducationalTool Department ©2017</div>
+    </div>
+  </footer>
+</body>
+
+</html>

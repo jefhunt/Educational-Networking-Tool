@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}ask{% endblock %}
+{% block content %}
+    {% load static %}
+  <div class="header row">
+    <ul class="nav pills">
+        <li {% if not tag and not order or order == 'newest' %}class="active"{% endif %}><a href="/newest">Newest</a></li>
+        <li {% if order == 'best' %}class="active"{% endif %}><a href="/best">Best</a></li>
+        {% if tag %}
+        <li class="title">Tag: {{ tag.title }}</li>
+        {% endif %}
+    </ul>
+
+  </div>
+{% if question_list %}
+{% for question in question_list %}
+<div class="question-container">
+  <div class="qst-left">
+
+    <button type="submit" class="btn rating-btn" onclick="like({{question.id}}, 1, 'question')">
+      <img src='{% static "img/up.png" %}' class="rating-img">
+    </button>
+    <div class="rating-label" id="like{{question.id}}">{{ question.rating }}</div>
+    <button type="submit" class="btn rating-btn" onclick="like({{question.id}}, -1, 'question')">
+     <img src='{% static "img/down.png" %}' class="rating-img">
+    </button>
+  </div>
+  <div class="qst-right">
+    <div class>
+      <a href="/question/{{ question.id }}/" class="header">{{ question.title }}</a>
+      <div class="question-title-container">
+        <div class="title-text">{{ question.content|slice:":250" }}...</div>
+      </div>
+      <div class="question-inner-container">
+				{% for tag in question.tags.all %}
+          <a href="?tag={{ tag.title }}" class="tag">{{ tag.title }}</a>
+				{% endfor %}
+      </div>
+      <div class="date-container">{{question.created}}</div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% else %}
+
+	<h1>No questions</h1>
+
+{% endif %}
+<nav>
+  <ul class="pagination pagination-lg">
+    {% if question_list.has_previous %}
+      <li>
+        <a href="?page={{ question_list.previous_page_number }}{% if tag %}&amp;tag={{tag.title }}{% endif %}">&lt;&lt;</a>
+      </li>
+    {% endif %}
+    {% if question_list.has_next %}
+    <li>
+      <a href="">{{ question_list.number }}</a>
+    </li>
+    {% endif %}
+    {% if question_list.has_next %}
+      <li>
+        <a href="?page={{ question_list.next_page_number }}{% if tag %}&amp;tag={{ tag.title }}{% endif %}">&gt;&gt;</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+        $.ajaxSetup({ 
+             beforeSend: function(xhr, settings) {
+                 function getCookie(name) {
+                     var cookieValue = null;
+                     if (document.cookie && document.cookie != '') {
+                         var cookies = document.cookie.split(';');
+                         for (var i = 0; i < cookies.length; i++) {
+                             var cookie = jQuery.trim(cookies[i]);
+                             // Does this cookie string begin with the name we want?
+                         if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                             break;
+                         }
+                     }
+                 }
+                 return cookieValue;
+                 }
+                 if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                     // Only send the token to relative URLs i.e. locally.
+                     xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                 }
+             } 
+        });
+       function like(objectId, likeType, objectType) {
+            $.ajax({
+                url : "{% url 'like' %}",
+                type : "POST",
+                data : { like_type : likeType,
+                         object_id : objectId,
+                         object_type : objectType
+                        },
+                success : function(data) {
+                    $('#like'+objectId).text(data.new_rating);
+                    if (data.error) {
+                        alert(data.error);
+                    }
+                } 
+            });
+        };
+    </script>
+{% endblock %}

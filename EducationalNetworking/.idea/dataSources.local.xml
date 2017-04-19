@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="SQLite -" uuid="775718dd-2c90-46dc-8c20-9c0db70f630b">
+      <secret-storage>master_key</secret-storage>
+      <first-sync>true</first-sync>
+    </data-source>
+    <data-source name="Django default" uuid="ac18d30a-6d02-4f95-9f78-119699296fce">
+      <user-name>root</user-name>
+      <user-password>df9bdf98df99df9e</user-password>
+      <schema-pattern>ask_db.*</schema-pattern>
+      <default-schemas>ask_db.*</default-schemas>
+    </data-source>
+  </component>
+</project>
